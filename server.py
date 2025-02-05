@@ -22,7 +22,8 @@ def start_server(host="0.0.0.0", port=9527):
                 data = client_socket.recv(1024)  # Lee hasta 1024 bytes
                 if data:
                     print(f"Received message: {data}") 
-                
+                    print(f"Size of message: {len(data)} bytes")
+                    
                 client_socket.sendall(b"Message received!\n")
                 
                 # Envía un mensaje de bienvenida al cliente
