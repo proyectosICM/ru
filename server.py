@@ -21,7 +21,7 @@ def start_server(host="0.0.0.0", port=9527):
                  # Leer el mensaje del cliente
                 data = client_socket.recv(1024)  # Lee hasta 1024 bytes
                 if data:
-                    print(f"Received message: {data.decode('utf-8').strip()}")
+                    print(f"Received message: {data}") 
                 
                 client_socket.sendall(b"Message received!\n")
                 
