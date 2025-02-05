@@ -1,5 +1,46 @@
 import socket
-import select  # Para monitorear el socket y manejar interrupciones de forma limpia
+import select
+import struct
+
+def parse_record(data):
+    if len(data) < 23:
+        print("Invalid record: Header is too short.")
+        return None
+    
+    # Extraer la cabecera del registro (23 bytes)
+    header = data[:23]
+    
+    # Desglosar los campos de la cabecera
+    timestamp, timestamp_extension, priority, longitude, latitude, altitude, angle, satellites, speed, hdop, event_id = struct.unpack('>I B B I I H H B H B', header)
+    
+    # Convertir los valores a sus formas legibles
+    timestamp = timestamp  # Ya está en formato Unix
+    timestamp_extension = timestamp_extension
+    priority = "High" if priority == 1 else "Low"
+    
+    # Convertir longitud y latitud a coordenadas reales
+    longitude = longitude / 10000000.0
+    latitude = latitude / 10000000.0
+    
+    altitude = altitude / 10.0  # Altitud en metros
+    angle = angle / 100.0  # Ángulo en grados
+    speed = speed / 10.0  # Velocidad en km/h
+    hdop = hdop / 10.0  # HDOP
+    
+    # Imprimir los valores
+    print(f"Timestamp: {timestamp} (Unix time)")
+    print(f"Timestamp Extension: {timestamp_extension}")
+    print(f"Priority: {priority}")
+    print(f"Longitude: {longitude}°")
+    print(f"Latitude: {latitude}°")
+    print(f"Altitude: {altitude} meters")
+    print(f"Angle: {angle}°")
+    print(f"Satellites: {satellites}")
+    print(f"Speed: {speed} km/h")
+    print(f"HDOP: {hdop}")
+    print(f"Event ID: {event_id}")
+    
+    # El cuerpo del mensaje es variable, si tienes más datos en 'data', deberías procesarlos aquí.
 
 def start_server(host="0.0.0.0", port=9527):
     try:
@@ -21,19 +62,15 @@ def start_server(host="0.0.0.0", port=9527):
                 # Leer el mensaje del cliente
                 data = client_socket.recv(1024)  # Lee hasta 1024 bytes
                 if data:
-                    print(f"Received message: {data}")
+                    print(f"Received message: {data}") 
                     print(f"Size of message: {len(data)} bytes")
                     
-                # Enviar el mensaje de confirmación b'\x01'
+                    # Procesar el mensaje y convertirlo a formato legible
+                    parse_record(data)
+                    
+                # Responder con el mensaje de confirmación
                 confirmation_message = b'\x01'
-                print(f"Sending confirmation message: {confirmation_message}")
                 client_socket.sendall(confirmation_message)
-                
-                # Leer la respuesta del cliente después de enviar el mensaje
-                response = client_socket.recv(1024)  # Lee hasta 1024 bytes de respuesta
-                if response:
-                    print(f"Received response: {response}")
-                    print(f"Size of response: {len(response)} bytes")
                 
                 client_socket.close()
     
