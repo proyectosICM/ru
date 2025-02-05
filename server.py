@@ -1,4 +1,5 @@
 import socket
+import select  # Para monitorear el socket y manejar interrupciones de forma limpia
 
 def start_server(host="0.0.0.0", port=9527):
     try:
@@ -12,15 +13,17 @@ def start_server(host="0.0.0.0", port=9527):
         print(f"Server listening on {host}:{port}")
         
         while True:
-            client_socket, client_address = server_socket.accept()
-            print(f"Connection from {client_address}")
-            
-            # Envía un mensaje de bienvenida al cliente
-            client_socket.sendall(b"Welcome to the server!\n")
-            client_socket.close()
+            readable, _, _ = select.select([server_socket], [], [], 1)  # Espera 1 segundo
+            if server_socket in readable:
+                client_socket, client_address = server_socket.accept()
+                print(f"Connection from {client_address}")
+                
+                # Envía un mensaje de bienvenida al cliente
+                client_socket.sendall(b"Welcome to the server!\n")
+                client_socket.close()
     
     except KeyboardInterrupt:
-        print("\nServer shutting down...")
+        print("\nServer shutting down (CTRL+C detected)...")
     
     except Exception as e:
         print(f"Error: {e}")
