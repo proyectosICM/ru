@@ -18,8 +18,15 @@ def start_server(host="0.0.0.0", port=9527):
                 client_socket, client_address = server_socket.accept()
                 print(f"Connection from {client_address}")
                 
+                 # Leer el mensaje del cliente
+                data = client_socket.recv(1024)  # Lee hasta 1024 bytes
+                if data:
+                    print(f"Received message: {data.decode('utf-8').strip()}")
+                
+                client_socket.sendall(b"Message received!\n")
+                
                 # Envía un mensaje de bienvenida al cliente
-                client_socket.sendall(b"Welcome to the server!\n")
+                # client_socket.sendall(b"Welcome to the server!\n")
                 client_socket.close()
     
     except KeyboardInterrupt:
