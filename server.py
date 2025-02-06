@@ -2,11 +2,17 @@ import socket
 import select
 import struct
 
+def get_recv_buffer_size(sock):
+    """Obtiene el tamaño del buffer de recepción del socket."""
+    buffer_size = sock.getsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF)
+    print(f"Receive buffer size: {buffer_size} bytes")
+    return buffer_size
+
 def parse_record(data):
     if len(data) < 23:
         print("Invalid record: Header is too short.")
         return None
-    
+        
     # Extraer la cabecera del registro (23 bytes)
     header = data[:23]
     
@@ -55,6 +61,9 @@ def start_server(host="0.0.0.0", port=9527):
                     # Nueva conexión
                     client_socket, client_address = server_socket.accept()
                     print(f"Connection from {client_address}")
+                    
+                    # Mostrar el tamaño del buffer de recepción
+                    get_recv_buffer_size(client_socket)
                     
                     # Enviar mensaje de confirmación inicial
                     confirmation_message = b'\x01'
