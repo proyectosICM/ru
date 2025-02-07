@@ -1,15 +1,40 @@
 import socket
 import struct
-import crcmod.predefined
 
-def calculate_crc16(data):
-    """Calcula CRC16 usando el algoritmo CRC-CCITT (Kermit)."""
-    crc16 = crcmod.predefined.Crc('kermit')
-    crc16.update(data)
-    return crc16.crcValue
+def calculate_crc16_kermit(data):
+    """Calcula el CRC-16 utilizando el algoritmo CRC-CCITT (Kermit)."""
+    crc = 0x0000
+    polynomial = 0x1021
+
+    for byte in data:
+        crc ^= byte << 8
+        for _ in range(8):
+            if crc & 0x8000:
+                crc = (crc << 1) ^ polynomial
+            else:
+                crc <<= 1
+            crc &= 0xFFFF  # Asegurarse de que el CRC sea de 16 bits
+    return crc
+
+def build_response(command_id, payload_data):
+    """
+    Construye un mensaje de respuesta según el protocolo:
+    Packet length | Command ID | Payload data | CRC16
+    """
+    # Construir el mensaje sin CRC
+    packet_length = 1 + len(payload_data)  # Command ID (1 byte) + Payload
+    packet = struct.pack(">H", packet_length)  # Packet length (2 bytes, big-endian)
+    packet += struct.pack(">B", command_id)   # Command ID (1 byte)
+    packet += payload_data                    # Payload data
+
+    # Calcular el CRC16 del paquete
+    crc = calculate_crc16_kermit(packet)
+    packet += struct.pack(">H", crc)         # CRC16 (2 bytes, big-endian)
+
+    return packet
 
 def start_server(host="0.0.0.0", port=9527):
-    """Inicia un servidor TCP que recibe mensajes estructurados y responde con una confirmación."""
+    """Inicia un servidor TCP que recibe mensajes y responde según el protocolo."""
     try:
         print(f"Starting server on {host}:{port}...")
 
@@ -25,40 +50,22 @@ def start_server(host="0.0.0.0", port=9527):
             print(f"Connection from {client_address}")
 
             try:
-                while True:
-                    header = client_socket.recv(2)  # Leer el campo de longitud (2 bytes)
-                    if not header:
+                while True:  # Mantener la conexión abierta para recibir múltiples mensajes
+                    data = client_socket.recv(1024)
+                    if data:
+                        print(f"Received message: {data.hex()}")
+
+                        # Construir mensaje de respuesta
+                        command_id = 0x01  # Por ejemplo, un comando de confirmación
+                        payload_data = b"OK"  # Confirmación simple
+                        response = build_response(command_id, payload_data)
+
+                        # Enviar respuesta
+                        client_socket.sendall(response)
+                        print(f"Sent response: {response.hex()}")
+                    else:
                         print(f"Client disconnected: {client_address}")
                         break
-                    
-                    packet_length = struct.unpack("!H", header)[0]  # Desempaquetar la longitud como entero sin signo
-                    print(f"Packet length: {packet_length}")
-
-                    data = client_socket.recv(packet_length + 2)  # Leer el resto del paquete (excepto los 2 bytes de longitud)
-                    if len(data) < packet_length + 2:
-                        print("Incomplete packet received")
-                        break
-                    
-                    imei = data[:8]
-                    command_id = data[8]
-                    payload = data[9:-2]
-                    received_crc = struct.unpack("!H", data[-2:])[0]
-
-                    # Calcular CRC16 del paquete recibido (excepto los últimos 2 bytes del CRC)
-                    calculated_crc = calculate_crc16(header + data[:-2])
-
-                    print(f"IMEI: {imei.hex()} | Command ID: {command_id} | Payload: {payload.decode('utf-8')}")
-                    print(f"Received CRC: {hex(received_crc)} | Calculated CRC: {hex(calculated_crc)}")
-
-                    if received_crc == calculated_crc:
-                        print("CRC check passed. Sending confirmation...")
-                        confirmation_message = b'\x00\x02\x01\x00'  # Ejemplo de respuesta estructurada con CRC
-                        confirmation_crc = calculate_crc16(confirmation_message[:-2])
-                        confirmation_message = confirmation_message[:-2] + struct.pack("!H", confirmation_crc)
-                        client_socket.sendall(confirmation_message)
-                        print("Confirmation sent.")
-                    else:
-                        print("CRC check failed.")
             except Exception as e:
                 print(f"Error receiving data: {e}")
             finally:
