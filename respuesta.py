@@ -1,6 +1,5 @@
 import socket
 import struct
-import time
 
 def calculate_crc16_kermit(data):
     """Calcula el CRC-16 utilizando el algoritmo CRC-CCITT (Kermit)."""
@@ -22,6 +21,7 @@ def build_response(command_id, payload_data):
     Construye un mensaje de respuesta según el protocolo:
     Packet length | Command ID | Payload data | CRC16
     """
+    # Construir el mensaje sin CRC
     packet_length = 1 + len(payload_data)  # Command ID (1 byte) + Payload
     packet = struct.pack(">H", packet_length)  # Packet length (2 bytes, big-endian)
     packet += struct.pack(">B", command_id)   # Command ID (1 byte)
@@ -29,7 +29,7 @@ def build_response(command_id, payload_data):
 
     # Calcular el CRC16 del paquete
     crc = calculate_crc16_kermit(packet)
-    packet += struct.pack(">H", crc)          # CRC16 (2 bytes, big-endian)
+    packet += struct.pack(">H", crc)         # CRC16 (2 bytes, big-endian)
 
     return packet
 
@@ -50,7 +50,6 @@ def start_server(host="0.0.0.0", port=9527):
             print(f"Connection from {client_address}")
 
             try:
-                client_socket.settimeout(5.0)  # Timeout de 5 segundos para esperar nuevos mensajes
                 while True:  # Mantener la conexión abierta para recibir múltiples mensajes
                     data = client_socket.recv(1024)
                     if data:
@@ -64,15 +63,9 @@ def start_server(host="0.0.0.0", port=9527):
                         # Enviar respuesta
                         client_socket.sendall(response)
                         print(f"Sent response: {response.hex()}")
-
-                        # Esperar 5 segundos para un nuevo mensaje
-                        print("Waiting for new message...")
-                        time.sleep(5)
                     else:
-                        print(f"No new message from {client_address}. Closing connection.")
+                        print(f"Client disconnected: {client_address}")
                         break
-            except socket.timeout:
-                print(f"Timeout: No new message from {client_address}. Closing connection.")
             except Exception as e:
                 print(f"Error receiving data: {e}")
             finally:
