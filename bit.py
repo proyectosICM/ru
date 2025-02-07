@@ -79,9 +79,8 @@ def start_server(host="0.0.0.0", port=9527):
                             sockets_list.remove(notified_socket)
                             notified_socket.close()
                         else:
-                            hex_data = data.hex().upper()  # Convertir a formato hexadecimal en mayúsculas
-                            print(f"Received message (hex): {hex_data}")
-                            parse_record(hex_data)
+                            print(f"Received message: {data}")
+                            parse_record(data)
                     except Exception as e:
                         print(f"Error receiving data: {e}")
                         sockets_list.remove(notified_socket)
