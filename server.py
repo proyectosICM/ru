@@ -2,7 +2,7 @@ import socket
 import select
 
 def start_server(host="0.0.0.0", port=9527):
-    """Inicia un servidor TCP que solo recibe el primer mensaje y cierra la conexión."""
+    """Inicia un servidor TCP que recibe y procesa mensajes continuamente."""
     try:
         print(f"Starting server on {host}:{port}...")
 
@@ -18,15 +18,18 @@ def start_server(host="0.0.0.0", port=9527):
             print(f"Connection from {client_address}")
 
             try:
-                data = client_socket.recv(1024)
-                if data:
-                    print(f"Received message: {data}")
+                while True:  # Mantener la conexión abierta para recibir múltiples mensajes
+                    data = client_socket.recv(1024)
+                    if data:
+                        print(f"Received message: {data}")
+                    else:
+                        print(f"Client disconnected: {client_address}")
+                        break
             except Exception as e:
                 print(f"Error receiving data: {e}")
             finally:
                 client_socket.close()
                 print(f"Connection closed with {client_address}")
-                break  # Salir después de recibir el primer mensaje
 
     except KeyboardInterrupt:
         print("\nServer shutting down (CTRL+C detected)...")
