@@ -2,7 +2,7 @@ import socket
 import select
 
 def start_server(host="0.0.0.0", port=9527):
-    """Inicia un servidor TCP que recibe y procesa mensajes continuamente."""
+    """Inicia un servidor TCP que recibe mensajes y envía una confirmación por cada mensaje recibido."""
     try:
         print(f"Starting server on {host}:{port}...")
 
@@ -22,6 +22,11 @@ def start_server(host="0.0.0.0", port=9527):
                     data = client_socket.recv(1024)
                     if data:
                         print(f"Received message: {data}")
+                        
+                        # Enviar mensaje de confirmación
+                        confirmation_message = b'OK'
+                        client_socket.sendall(confirmation_message)
+                        print("Confirmation sent.")
                     else:
                         print(f"Client disconnected: {client_address}")
                         break
