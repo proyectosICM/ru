@@ -36,13 +36,15 @@ def process(data):
     
     # Latitude (4 bytes = 8 caracteres hexadecimales)
     latitude_hex = data[34:42]
-    latitude = int(latitude_hex, 16)
-    print(f"Latitude = {latitude}")
+    latitude = int(latitude_hex, 16) / 1e6  # Convertir a formato decimal estándar
+    print(f"Latitude = {latitude:.6f} (0x{latitude_hex})")
     
     # Longitude (4 bytes = 8 caracteres hexadecimales)
     longitude_hex = data[42:50]
-    longitude = int(longitude_hex, 16)
-    print(f"Longitude = {longitude}")
+    longitude = int(longitude_hex, 16) / 1e6  # Convertir a formato decimal estándar
+    print(f"Longitude = {longitude:.6f} (0x{longitude_hex})")
+    
+    # 
     
 def start_server(host="0.0.0.0", port=9527):
     """Inicia un servidor TCP que recibe mensajes y envía una confirmación por cada mensaje recibido."""
