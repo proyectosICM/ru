@@ -2,13 +2,12 @@ import socket
 import select
 
 def process(data):
-    # Extraer los primeros 4 bytes (8 caracteres hexadecimales)
     packet_length_hex = data[:4]
-    packet_length = int(packet_length_hex, 8)
+    packet_length = int(packet_length_hex, 16)
     print(f"Packet length = {packet_length}")
     
     # Extraer los siguientes 16 bytes (32 caracteres hexadecimales)
-    imei_hex = data[8:40]
+    imei_hex = data[4:20]
     imei = int(imei_hex, 16)
     print(f"IMEI = {imei}")
 
