@@ -34,6 +34,16 @@ def process(data):
     timestamp = int(timestamp_hex, 16)
     print(f"Timestamp = {timestamp}")
     
+    # Latitude (4 bytes = 8 caracteres hexadecimales)
+    latitude_hex = data[34:42]
+    latitude = int(latitude_hex, 16)
+    print(f"Latitude = {latitude}")
+    
+    # Longitude (4 bytes = 8 caracteres hexadecimales)
+    longitude_hex = data[42:50]
+    longitude = int(longitude_hex, 16)
+    print(f"Longitude = {longitude}")
+    
 def start_server(host="0.0.0.0", port=9527):
     """Inicia un servidor TCP que recibe mensajes y envía una confirmación por cada mensaje recibido."""
     try:
