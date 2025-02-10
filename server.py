@@ -3,7 +3,7 @@ import select
 
 def process(data):
     # Extraer los primeros 4 bytes (8 caracteres hexadecimales)
-    packet_length_hex = data[:8]
+    packet_length_hex = data[:4]
     packet_length = int(packet_length_hex, 16)
     print(f"Packet length = {packet_length}")
     
