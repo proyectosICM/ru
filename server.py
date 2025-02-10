@@ -92,7 +92,7 @@ def process2(data):
     print(f"Record size = {record_size}")
     
     # Record left (1 byte = 2 caracteres hexadecimales)
-    record_left_hex = data[24:26]
+    record_left_hex = data[24:26]   
     record_left = int(record_left_hex, 16)
     print(f"Record left = {record_left}")
     
@@ -103,40 +103,7 @@ def process2(data):
     timestamp = int(timestamp_hex, 16)
     print(f"Timestamp = {timestamp}")
     
-    # Latitude (4 bytes = 8 caracteres hexadecimales)
-    latitude_hex = data[34:42]
-    latitude = int(latitude_hex, 16) / 1e6  # Convertir a formato decimal estándar
-    print(f"Latitude = {latitude:.6f} (0x{latitude_hex})")
     
-    # Longitude (4 bytes = 8 caracteres hexadecimales)
-    longitude_hex = data[42:50]
-    longitude = int(longitude_hex, 16) / 1e6  # Convertir a formato decimal estándar
-    print(f"Longitude = {longitude:.6f} (0x{longitude_hex})")
-    
-    # RPM (2 bytes = 4 caracteres hexadecimales)
-    rpm_hex = data[50:54]
-    rpm = int(rpm_hex, 16)
-    print(f"RPM = {rpm}")
-    
-    # Speed (1 byte = 2 caracteres hexadecimales)
-    speed_hex = data[54:56]
-    speed = int(speed_hex, 16)
-    print(f"Speed = {speed}")
-    
-    # Engine state (1 byte = 2 caracteres hexadecimales)
-    engine_state_hex = data[56:58]
-    engine_state = int(engine_state_hex, 16)
-    print(f"Engine state = {engine_state}")
-    
-    # Brake pedal position (1 byte = 2 caracteres hexadecimales)
-    brake_pedal_position_hex = data[58:60]
-    brake_pedal_position = int(brake_pedal_position_hex, 16)
-    print(f"Brake pedal position = {brake_pedal_position}")
-    
-    # Acceleration pedal position (1 byte = 2 caracteres hexadecimales)
-    acceleration_pedal_position_hex = data[60:62]
-    acceleration_pedal_position = int(acceleration_pedal_position_hex, 16)
-    print(f"Acceleration pedal position = {acceleration_pedal_position}")
     
 def start_server(host="0.0.0.0", port=9527):
     """Inicia un servidor TCP que recibe mensajes y envía una confirmación por cada mensaje recibido."""
@@ -159,7 +126,7 @@ def start_server(host="0.0.0.0", port=9527):
                     data = client_socket.recv(1024)
                     if data:
                         print(f"Received message: {data.hex()}")
-                        process(data.hex())
+                        process2(data.hex())
                         # Enviar mensaje de confirmación
                         confirmation_message = b'OK'
                         client_socket.sendall(confirmation_message)
