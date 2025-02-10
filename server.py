@@ -32,8 +32,8 @@ def start_server(host="0.0.0.0", port=9527):
                 while True:  # Mantener la conexión abierta para recibir múltiples mensajes
                     data = client_socket.recv(1024)
                     if data:
-                        print(f"Received message: {data}")
-                        process(data)
+                        print(f"Received message: {data.hex()}")
+                        process(data.hex())
                         # Enviar mensaje de confirmación
                         confirmation_message = b'OK'
                         client_socket.sendall(confirmation_message)
