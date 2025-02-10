@@ -99,7 +99,7 @@ def process2(data):
     # Accident records (variable)
     
     # Timestamp (4 bytes = 8 caracteres hexadecimales)
-    timestamp_hex = data[24:32]
+    timestamp_hex = data[26:34]
     timestamp = int(timestamp_hex, 16)
     print(f"Timestamp = {timestamp}")
     
