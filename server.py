@@ -14,12 +14,25 @@ def process(data):
     # Extraer el Command ID (1 byte = 2 caracteres hexadecimales)
     command_id_hex = data[20:22]
     command_id = int(command_id_hex, 16)
-    print(f"Command ID = {command_id} (0x{command_id_hex})")
+    print(f"Command ID = {command_id}")
 
     # Extraer el Payload data (variable)
     # Record size (1 byte = 2 caracteres hexadecimales)
     record_size_hex = data[22:24]
     record_size = int(record_size_hex, 16)
+    print(f"Record size = {record_size}")
+    
+    # Record left (1 byte = 2 caracteres hexadecimales)
+    record_left_hex = data[24:26]
+    record_left = int(record_left_hex, 16)
+    print(f"Record left = {record_left}")
+    
+    # Accident records (variable)
+    
+    # Timestamp (4 bytes = 8 caracteres hexadecimales)
+    timestamp_hex = data[26:34]
+    timestamp = int(timestamp_hex, 16)
+    print(f"Timestamp = {timestamp}")
     
 def start_server(host="0.0.0.0", port=9527):
     """Inicia un servidor TCP que recibe mensajes y envía una confirmación por cada mensaje recibido."""
