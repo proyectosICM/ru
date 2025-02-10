@@ -90,7 +90,14 @@ def process2(data):
     record_size_hex = data[22:24]
     record_size = int(record_size_hex, 16)
     print(f"Record size = {record_size}")
-
+    
+    # Record left (1 byte = 2 caracteres hexadecimales)
+    record_left_hex = data[24:26]   
+    record_left = int(record_left_hex, 16)
+    print(f"Record left = {record_left}")
+    
+    # Accident records (variable)
+    
     # Timestamp (4 bytes = 8 caracteres hexadecimales)
     timestamp_hex = data[24:32]
     timestamp = int(timestamp_hex, 16)
