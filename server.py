@@ -73,17 +73,17 @@ def process(data):
 def process2(data):
     packet_length_hex = data[:4]
     packet_length = int(packet_length_hex, 16)
-    print(f"Packet length = {packet_length}")
+    print(f"Packet length = {packet_length} (0x{packet_length_hex})")
     
     # Extraer los siguientes 16 bytes (32 caracteres hexadecimales)
     imei_hex = data[4:20]
     imei = int(imei_hex, 16)
-    print(f"IMEI = {imei}")
+    print(f"IMEI = {imei} (0x{imei_hex})")
     
     # Extraer el Command ID (1 byte = 2 caracteres hexadecimales)
     command_id_hex = data[20:22]
     command_id = int(command_id_hex, 16)
-    print(f"Command ID = {command_id}")
+    print(f"Command ID = {command_id} (0x{command_id_hex})")
 
     # Extraer el Payload data (variable)
     # Record size (1 byte = 2 caracteres hexadecimales)
