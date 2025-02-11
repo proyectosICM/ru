@@ -103,6 +103,25 @@ def process2(data):
     timestamp = int(timestamp_hex, 16)
     print(f"Timestamp = {timestamp}")
     
+    # Timestamp extension (1 byte = 2 caracteres hexadecimales)
+    timestamp_extension_hex = data[34:36]
+    timestamp_extension = int(timestamp_extension_hex, 16)
+    print(f"Timestamp extension = {timestamp_extension}")
+    
+    # Priority (1 byte = 2 caracteres hexadecimales)
+    priority_hex = data[36:38]
+    priority = int(priority_hex, 16)
+    print(f"Priority = {priority}")
+    
+    # Longitude (4 bytes = 8 caracteres hexadecimales)
+    longitude_hex = data[38:46]
+    longitude = int(longitude_hex, 16) / 1e6  # Convertir a formato decimal estándar
+    print(f"Longitude = {longitude:.6f} (0x{longitude_hex})")
+    
+    # Latitude (4 bytes = 8 caracteres hexadecimales)
+    latitude_hex = data[46:54]
+    latitude = int(latitude_hex, 16) / 1e6  # Convertir a formato decimal estándar
+    print(f"Latitude = {latitude:.6f} (0x{latitude_hex})")
     
     
 def start_server(host="0.0.0.0", port=9527):
