@@ -194,18 +194,18 @@ def process3(data):
     
     # Longitude (4 bytes = 8 caracteres hexadecimales)
     longitude_hex = data[40:48]
-    longitude = int(longitude_hex, 16) / 1e6  # Convertir a formato decimal estándar
-    print(f"Longitude = {longitude:.6f} (0x{longitude_hex})")
+    longitude = int(longitude_hex, 16) / 10_000_000
+    print(f"Longitude = {longitude:.7f} (0x{longitude_hex})")
     
     # Latitude (4 bytes = 8 caracteres hexadecimales)
-    latitude_hex = data[48:56] 
-    latitude = int(latitude_hex, 16) / 1e6  # Convertir a formato decimal estándar
-    print(f"Latitude = {latitude:.6f} (0x{latitude_hex})")
+    latitude_hex = data[48:56]
+    latitude = int(latitude_hex, 16) / 10_000_000  # Convertir a formato decimal estándar
+    print(f"Latitude = {latitude:.7f} (0x{latitude_hex})")
     
     # Altitude (2 bytes = 4 caracteres hexadecimales)
     altitude_hex = data[56:60]
-    altitude = int(altitude_hex, 16)
-    print(f"Altitude = {altitude}")
+    altitude = int(altitude_hex, 16) / 10  # Convertir a metros reales
+    print(f"Altitude = {altitude:.1f} m (0x{altitude_hex})")
     
     # Angle (2 bytes = 4 caracteres hexadecimales)
     angle_hex = data[60:64]
