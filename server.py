@@ -123,6 +123,26 @@ def process2(data):
     latitude = int(latitude_hex, 16) / 1e6  # Convertir a formato decimal estándar
     print(f"Latitude = {latitude:.6f} (0x{latitude_hex})")
     
+    # Altitude (2 bytes = 4 caracteres hexadecimales)
+    altitude_hex = data[54:58]
+    altitude = int(altitude_hex, 16)
+    print(f"Altitude = {altitude}")
+    
+    # Angle (2 bytes = 4 caracteres hexadecimales)
+    angle_hex = data[58:62]
+    angle = int(angle_hex, 16)
+    print(f"Angle = {angle}")
+    
+    # Satellites (1 byte = 2 caracteres hexadecimales)
+    satellites_hex = data[62:64]
+    satellites = int(satellites_hex, 16)
+    print(f"Satellites = {satellites}")
+    
+    # Speed (2 bytes = 4 caracteres hexadecimales)
+    speed_hex = data[64:68]
+    speed = int(speed_hex, 16)
+    print(f"Speed = {speed}")
+    
     
 def start_server(host="0.0.0.0", port=9527):
     """Inicia un servidor TCP que recibe mensajes y envía una confirmación por cada mensaje recibido."""
