@@ -111,7 +111,7 @@ def process2(data):
     # Priority (1 byte = 2 caracteres hexadecimales)
     priority_hex = data[36:38]
     priority = int(priority_hex, 16)
-    print(f"Priority = {priority}")
+    print(f"Priority = {priority} (0x{priority_hex})")
     
     # Longitude (4 bytes = 8 caracteres hexadecimales)
     longitude_hex = data[38:46]
