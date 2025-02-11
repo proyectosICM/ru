@@ -89,12 +89,12 @@ def process2(data):
     # Record left (1 byte = 2 caracteres hexadecimales)
     record_left_hex = data[22:24]
     record_left = int(record_left_hex, 16)
-    print(f"Record size = {record_left} (0x{record_left_hex})")
+    print(f"Record left = {record_left} (0x{record_left_hex})")
     
     # Number of records (1 byte = 2 caracteres hexadecimales)
     number_records_hex = data[24:26]   
     number_records = int(number_records_hex, 16)
-    print(f"Record left = {number_records} (0x{number_records_hex})")
+    print(f"Number of records = {number_records} (0x{number_records_hex})")
     
     # Accident records (variable)
     
