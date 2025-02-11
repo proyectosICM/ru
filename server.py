@@ -86,15 +86,15 @@ def process2(data):
     print(f"Command ID = {command_id} (0x{command_id_hex})")
 
     # Extraer el Payload data (variable)
-    # Record size (1 byte = 2 caracteres hexadecimales)
-    record_size_hex = data[22:24]
-    record_size = int(record_size_hex, 16)
-    print(f"Record size = {record_size}")
-    
     # Record left (1 byte = 2 caracteres hexadecimales)
-    record_left_hex = data[24:26]   
+    record_left_hex = data[22:24]
     record_left = int(record_left_hex, 16)
-    print(f"Record left = {record_left}")
+    print(f"Record size = {record_left}")
+    
+    # Number of records (1 byte = 2 caracteres hexadecimales)
+    number_records_hex = data[24:26]   
+    number_records = int(number_records_hex, 16)
+    print(f"Record left = {number_records}")
     
     # Accident records (variable)
     
