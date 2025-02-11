@@ -106,7 +106,7 @@ def process2(data):
     # Timestamp extension (1 byte = 2 caracteres hexadecimales)
     timestamp_extension_hex = data[34:36]
     timestamp_extension = int(timestamp_extension_hex, 16)
-    print(f"Timestamp extension = {timestamp_extension}")
+    print(f"Timestamp extension = {timestamp_extension} (0x{timestamp_extension})")
     
     # Priority (1 byte = 2 caracteres hexadecimales)
     priority_hex = data[36:38]
@@ -119,7 +119,7 @@ def process2(data):
     print(f"Longitude = {longitude:.6f} (0x{longitude_hex})")
     
     # Latitude (4 bytes = 8 caracteres hexadecimales)
-    latitude_hex = data[46:54]
+    latitude_hex = data[46:54] 
     latitude = int(latitude_hex, 16) / 1e6  # Convertir a formato decimal estándar
     print(f"Latitude = {latitude:.6f} (0x{latitude_hex})")
     
