@@ -278,7 +278,7 @@ def response_server2(data):
     crc16 = calculate_crc16(packet).to_bytes(2, byteorder="big")
     full_packet = packet + crc16
 
-    
+    return full_packet
     
     
 def start_server(host="0.0.0.0", port=9527):
