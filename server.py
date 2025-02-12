@@ -194,8 +194,8 @@ def process3(data):
     
     # Longitude (4 bytes = 8 caracteres hexadecimales)
     longitude_hex = data[40:48]
-    longitude = int(longitude_hex, 16) / 1e7
-    print(f"Longitude = {longitude:.7f} (0x{longitude_hex})")
+    longitude = int(longitude_hex, 16)
+    print(f"Longitude = {longitude} (0x{longitude_hex})")
     
     # Latitude (4 bytes = 8 caracteres hexadecimales)
     latitude_hex = data[48:56]
