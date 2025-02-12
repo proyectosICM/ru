@@ -222,6 +222,32 @@ def process3(data):
     speed = int(speed_hex, 16)
     print(f"Speed = {speed}")
     
+    # HDOP (1 byte = 2 caracteres hexadecimales)
+    hdop_hex = data[70:72]
+    hdop = int(hdop_hex, 16) / 10  # Convertir a valor real
+    print(f"HDOP = {hdop:.1f} (0x{hdop_hex})")
+    
+    # IO Data caused record  (1 byte = 2 caracteres hexadecimales)
+    io_data_record_hex = data[72:74]
+    io_data_record = int(io_data_record_hex, 16)
+    print(f"IO Data caused record = {io_data_record}")
+    
+    # IO Elements 
+    
+    
+def response_server(data):
+    data_response = {} 
+    packet_length = 0x00 
+    
+    comando_id = data.packet_length.hex()  
+    payload_data = data.payload.hex()  
+    crc16 = data.crc16.hex() 
+    
+    data_response['comando_id'] = comando_id
+    data_response['payload_data'] = payload_data
+    data_response['crc16'] = crc16
+    
+    return data_response
     
 def start_server(host="0.0.0.0", port=9527):
     """Inicia un servidor TCP que recibe mensajes y envía una confirmación por cada mensaje recibido."""
