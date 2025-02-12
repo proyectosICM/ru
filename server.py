@@ -302,7 +302,7 @@ def start_server(host="0.0.0.0", port=9527):
                     data = client_socket.recv(1024)
                     if data:
                         print(f"Received message: {data.hex()}")
-                        process3(data.hex())
+                        # process3(data.hex())
                         # Enviar mensaje de confirmación
                         confirmation_message = response_server2(data)
                         client_socket.sendall(confirmation_message)
