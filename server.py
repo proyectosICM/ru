@@ -298,15 +298,13 @@ def start_server(host="0.0.0.0", port=9527):
             print(f"Connection from {client_address}")
 
             try:
-                while True:  # Mantener la conexión abierta para recibir múltiples mensajes
+                while True:
                     data = client_socket.recv(1024)
                     if data:
                         print(f"Received message: {data.hex()}")
-                        # process3(data.hex())
-                        # Enviar mensaje de confirmación
                         confirmation_message = response_server2(data)
                         client_socket.sendall(confirmation_message)
-                        print("Confirmation sent.")
+                        print("Confirmation sent, waiting for the next message...")
                     else:
                         print(f"Client disconnected: {client_address}")
                         break
