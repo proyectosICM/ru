@@ -1,5 +1,6 @@
 import socket
 import select
+import struct
 
 def process(data):
     packet_length_hex = data[:4]
@@ -249,6 +250,37 @@ def response_server(data):
     
     return data_response
     
+def calculate_crc16(data: bytes) -> int:
+    """Calcula el CRC16-CCITT (modificado) del mensaje."""
+    crc = 0xFFFF
+    for byte in data:
+        crc ^= byte << 8
+        for _ in range(8):
+            if crc & 0x8000:
+                crc = (crc << 1) ^ 0x1021
+            else:
+                crc <<= 1
+            crc &= 0xFFFF
+    return crc
+
+def response_server2(data):
+    """Construye la respuesta del servidor siguiendo el protocolo Server-to-Device."""
+    command_id = 0x01  # Por ejemplo, un Command ID fijo para una respuesta básica
+    payload_data = b"ACK"  # Payload de ejemplo (puede variar según tu lógica)
+
+    # Calcular longitud total del paquete (2 bytes para longitud + 1 byte Command ID + tamaño del payload + 2 bytes CRC16)
+    packet_length = 1 + len(payload_data) + 2  # No incluye los 2 bytes de la longitud
+
+    # Construir el paquete sin CRC16
+    packet = struct.pack(f">H B {len(payload_data)}s", packet_length, command_id, payload_data)
+
+    # Calcular CRC16 y agregarlo al paquete
+    crc16 = calculate_crc16(packet).to_bytes(2, byteorder="big")
+    full_packet = packet + crc16
+
+    
+    
+    
 def start_server(host="0.0.0.0", port=9527):
     """Inicia un servidor TCP que recibe mensajes y envía una confirmación por cada mensaje recibido."""
     try:
@@ -272,7 +304,7 @@ def start_server(host="0.0.0.0", port=9527):
                         print(f"Received message: {data.hex()}")
                         process3(data.hex())
                         # Enviar mensaje de confirmación
-                        confirmation_message = b'OK'
+                        confirmation_message = response_server2(data)
                         client_socket.sendall(confirmation_message)
                         print("Confirmation sent.")
                     else:
