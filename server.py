@@ -1,6 +1,7 @@
 import socket
 import select
 import struct
+from datetime import datetime
 
 def process(data):
     packet_length_hex = data[:4]
@@ -301,7 +302,9 @@ def start_server(host="0.0.0.0", port=9527):
                 while True:
                     data = client_socket.recv(1024)
                     if data:
+                        received_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                         print(f"Received message: {data.hex()}")
+                        print(f"Received at: {received_time}")
                         process3(data.hex())
                         confirmation_message = response_server2(data)
                         client_socket.sendall(confirmation_message)
