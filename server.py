@@ -277,6 +277,48 @@ def process3(data):
         
         io_start += 6  # Cada elemento IO de 2 bytes ocupa 6 caracteres hexadecimales
         
+    # No. of IO data 4Byte
+    n_of_io_data_4b_hex = data[io_start:io_start + 2]
+    n_of_io_data_4b = int(n_of_io_data_4b_hex, 16)
+    print(f"\nNo. of IO data 4Byte = {n_of_io_data_4b} (0x{n_of_io_data_4b_hex})")
+
+    io_start += 2  # Saltar el byte que indica el número de elementos de 4 bytes
+
+    print("\n--- IO Data Elements (4 Bytes) ---")
+
+    # Extraer y procesar los datos de 4 bytes
+    for i in range(n_of_io_data_4b):
+        io_id_hex = data[io_start:io_start + 2]            # ID del IO (1 byte)
+        io_value_hex = data[io_start + 2:io_start + 10]    # Valor del IO (4 bytes)
+        
+        io_id = int(io_id_hex, 16)
+        io_value = int(io_value_hex, 16)
+        
+        print(f"  IO Element {i + 1}: ID = {io_id} (0x{io_id_hex}), Value = {io_value} (0x{io_value_hex})")
+        
+        io_start += 10  # Cada elemento IO de 4 bytes ocupa 10 caracteres hexadecimales
+
+    # No. of IO data 8Byte
+    n_of_io_data_8b_hex = data[io_start:io_start + 2]
+    n_of_io_data_8b = int(n_of_io_data_8b_hex, 16)
+    print(f"\nNo. of IO data 8Byte = {n_of_io_data_8b} (0x{n_of_io_data_8b_hex})")
+
+    io_start += 2  # Saltar el byte que indica el número de elementos de 8 bytes
+
+    print("\n--- IO Data Elements (8 Bytes) ---")
+
+    # Extraer y procesar los datos de 8 bytes
+    for i in range(n_of_io_data_8b):
+        io_id_hex = data[io_start:io_start + 2]             # ID del IO (1 byte)
+        io_value_hex = data[io_start + 2:io_start + 18]     # Valor del IO (8 bytes)
+        
+        io_id = int(io_id_hex, 16)
+        io_value = int(io_value_hex, 16)
+        
+        print(f"  IO Element {i + 1}: ID = {io_id} (0x{io_id_hex}), Value = {io_value} (0x{io_value_hex})")
+        
+        io_start += 18  # Cada elemento IO de 8 bytes ocupa 18 caracteres hexadecimales
+        
 def response_server(data):
     data_response = {} 
     packet_length = 0x00 
