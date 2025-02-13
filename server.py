@@ -324,7 +324,6 @@ def response_server2(data):
 
 
 def response_server3():
-    data_response = ""
     packet_length = 0x0002  # Longitud del paquete (2 bytes)
     comando_id = 0x64       # ID del comando (1 byte)
     ack = 0x01              # ACK de respuesta (1 byte)
@@ -339,8 +338,8 @@ def response_server3():
     # Concatenamos todo en un solo mensaje
     data_response = packet_length_hex + comando_id_hex + ack_hex + crc16_hex
 
-    # Retornamos el mensaje hexadecimal como string
-    return data_response.upper()
+    # Retornamos el mensaje como bytes
+    return bytes.fromhex(data_response)
 
 # Ejemplo de uso:
 response = response_server2(data=None)
