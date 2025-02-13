@@ -272,7 +272,7 @@ def process3(data):
     
     # IO Elements 
     
-    #io_start = 74
+    io_start = 74
     #io_start = process_io_elements(data, io_start, 1)
     #io_start = process_io_elements(data, io_start, 2)
     #io_start = process_io_elements(data, io_start, 4)
@@ -321,6 +321,30 @@ def response_server2(data):
     full_packet = packet + crc16
 
     return full_packet
+
+
+def response_server3():
+    data_response = ""
+    packet_length = 0x0002  # Longitud del paquete (2 bytes)
+    comando_id = 0x64       # ID del comando (1 byte)
+    ack = 0x01              # ACK de respuesta (1 byte)
+    crc16 = 0x13bc          # Valor CRC16 (2 bytes)
+
+    # Convertimos cada valor a su representación hexadecimal de longitud fija
+    packet_length_hex = format(packet_length, '04x')  # 2 bytes
+    comando_id_hex = format(comando_id, '02x')        # 1 byte
+    ack_hex = format(ack, '02x')                      # 1 byte
+    crc16_hex = format(crc16, '04x')                  # 2 bytes
+
+    # Concatenamos todo en un solo mensaje
+    data_response = packet_length_hex + comando_id_hex + ack_hex + crc16_hex
+
+    # Retornamos el mensaje hexadecimal como string
+    return data_response.upper()
+
+# Ejemplo de uso:
+response = response_server2(data=None)
+print(f"Mensaje hexadecimal de respuesta: {response}")
     
     
 def start_server(host="0.0.0.0", port=9527):
@@ -347,7 +371,7 @@ def start_server(host="0.0.0.0", port=9527):
                         print(f"Received message: {data.hex()}")
                         print(f"Received at: {received_time}")
                         process3(data.hex())
-                        confirmation_message = response_server2(data)
+                        confirmation_message = response_server3()
                         client_socket.sendall(confirmation_message)
                         print("Confirmation sent, waiting for the next message...")
                     else:
