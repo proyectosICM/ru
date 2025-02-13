@@ -227,13 +227,18 @@ def process3(data):
 
     # Dividir por 10,000,000 para obtener la coordenada real
     longitude_decimal = longitude / 10000000.0
-
     print(f"Longitude = {longitude_decimal} (0x{longitude_hex})")
     
     # Latitude (4 bytes = 8 caracteres hexadecimales)
     latitude_hex = data[48:56]
-    latitude = int(latitude_hex, 16) / 1e7  # Convertir a formato decimal estándar
-    print(f"Latitude = {latitude:.7f} (0x{latitude_hex})")
+    latitude = int(latitude_hex, 16) 
+    # Convertir a entero con signo (32 bits)
+    if latitude > 0x7FFFFFFF:  # Si el número es mayor al máximo de 31 bits
+        latitude -= 0x100000000  # Lo convertimos a número negativo
+
+    # Dividir por 10,000,000 para obtener la coordenada real
+    latitude_decimal = latitude / 10000000.0
+    print(f"Latitude = {latitude_decimal:.7f} (0x{latitude_hex})")
     
     # Altitude (2 bytes = 4 caracteres hexadecimales)
     altitude_hex = data[56:60]
