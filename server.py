@@ -200,7 +200,8 @@ def process3(data):
     # Timestamp (4 bytes = 8 caracteres hexadecimales)
     timestamp_hex = data[26:34]
     timestamp = int(timestamp_hex, 16)
-    print(f"Timestamp = {timestamp} (0x{timestamp_hex})")
+    readable_date = datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S')
+    print(f"Timestamp = {timestamp} (0x{timestamp_hex}), Fecha legible = {readable_date}")
     
     # Timestamp extension (1 byte = 2 caracteres hexadecimales)
     timestamp_extension_hex = data[34:36]
