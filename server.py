@@ -259,12 +259,7 @@ def process3(data):
     
     # IO Elements 
     
-    # No. of IO data 1Byte (1 byte = 2 caracteres hexadecimales) 
-    n_of_io_data_hex = data[74:76]
-    n_of_io_data = int(n_of_io_data_hex, 16)
-    print(f"No. of IO data 1Byte = {n_of_io_data} (0x{n_of_io_data_hex})")
-    
-    io_start = 76
+    io_start = 74
     io_start = process_io_elements(data, io_start, 1)
     io_start = process_io_elements(data, io_start, 2)
     io_start = process_io_elements(data, io_start, 4)
