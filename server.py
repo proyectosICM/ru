@@ -182,7 +182,7 @@ def process3(data):
     # Timestamp extension (1 byte = 2 caracteres hexadecimales)
     timestamp_extension_hex = data[34:36]
     timestamp_extension = int(timestamp_extension_hex, 16)
-    print(f"Timestamp extension = {timestamp_extension} (0x{timestamp_extension})")
+    print(f"Timestamp extension = {timestamp_extension} (0x{timestamp_extension_hex})")
     
     # Priority (1 byte = 2 caracteres hexadecimales)
     priority_hex = data[36:38]
