@@ -273,10 +273,10 @@ def process3(data):
     # IO Elements 
     
     io_start = 74
-    # io_start = process_io_elements(data, io_start, 1)
-    # io_start = process_io_elements(data, io_start, 2)
-    # io_start = process_io_elements(data, io_start, 4)
-    # io_start = process_io_elements(data, io_start, 8)
+    io_start = process_io_elements(data, io_start, 1)
+    io_start = process_io_elements(data, io_start, 2)
+    io_start = process_io_elements(data, io_start, 4)
+    io_start = process_io_elements(data, io_start, 8)
         
 def response_server(data):
     data_response = {} 
