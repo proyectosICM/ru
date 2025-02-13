@@ -309,7 +309,7 @@ def start_server(host="0.0.0.0", port=9527):
                         received_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                         print(f"Received message: {data.hex()}")
                         print(f"Received at: {received_time}")
-                        process2(data.hex())
+                        process3(data.hex())
                         confirmation_message = response_server2(data)
                         client_socket.sendall(confirmation_message)
                         print("Confirmation sent, waiting for the next message...")
