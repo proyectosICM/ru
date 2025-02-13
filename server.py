@@ -238,7 +238,7 @@ def process3(data):
     
     # No. of IO data 1Byte (1 byte = 2 caracteres hexadecimales) 
     n_of_io_data_hex = data[74:76]
-    n_of_io_data = int(io_data_record_hex, 16)
+    n_of_io_data = int(n_of_io_data_hex, 16)
     print(f"No. of IO data 1Byte = {n_of_io_data} (0x{n_of_io_data_hex})")
     
 def response_server(data):
