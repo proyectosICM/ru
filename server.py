@@ -212,17 +212,17 @@ def process3(data):
     # Angle (2 bytes = 4 caracteres hexadecimales)
     angle_hex = data[60:64]
     angle = int(angle_hex, 16)
-    print(f"Angle = {angle}")
+    print(f"Angle = {angle} (0x{angle_hex})")
     
     # Satellites (1 byte = 2 caracteres hexadecimales)
     satellites_hex = data[64:66]
     satellites = int(satellites_hex, 16)
-    print(f"Satellites = {satellites}")
+    print(f"Satellites = {satellites} (0x{satellites_hex})")
     
     # Speed (2 bytes = 4 caracteres hexadecimales)
     speed_hex = data[66:70]
     speed = int(speed_hex, 16)
-    print(f"Speed = {speed}")
+    print(f"Speed = {speed} (0x{speed_hex})")
     
     # HDOP (1 byte = 2 caracteres hexadecimales)
     hdop_hex = data[70:72]
@@ -232,14 +232,14 @@ def process3(data):
     # IO Data caused record  (1 byte = 2 caracteres hexadecimales)
     io_data_record_hex = data[72:74]
     io_data_record = int(io_data_record_hex, 16)
-    print(f"IO Data caused record = {io_data_record}")
+    print(f"IO Data caused record = {io_data_record} (0x{io_data_record_hex})")
     
     # IO Elements 
     
     # No. of IO data 1Byte (1 byte = 2 caracteres hexadecimales) 
     n_of_io_data_hex = data[74:76]
     n_of_io_data = int(io_data_record_hex, 16)
-    print(f"No. of IO data 1Byte = {n_of_io_data}")
+    print(f"No. of IO data 1Byte = {n_of_io_data} (0x{n_of_io_data_hex})")
     
 def response_server(data):
     data_response = {} 
