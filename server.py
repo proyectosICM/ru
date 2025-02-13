@@ -146,6 +146,29 @@ def process2(data):
     print(f"Speed = {speed}")
     
     
+def process_io_elements(data, start, io_size):
+    io_start = start
+    io_data_size_map = {1: 4, 2: 6, 4: 10, 8: 18}
+    print(f"\n--- IO Data Elements ({io_size} Byte) ---")
+    
+    # No. of IO data (1 byte = 2 caracteres hexadecimales)
+    n_of_io_data_hex = data[io_start:io_start + 2]
+    n_of_io_data = int(n_of_io_data_hex, 16)
+    print(f"No. of IO data {io_size}Byte = {n_of_io_data} (0x{n_of_io_data_hex})")
+
+    io_start += 2  # Saltar el byte que indica el número de elementos de este tamaño
+
+    # Procesar los elementos IO
+    for i in range(n_of_io_data):
+        io_id_hex = data[io_start:io_start + 2]                 # ID del IO (1 byte)
+        io_value_hex = data[io_start + 2:io_start + io_data_size_map[io_size]]  # Valor del IO
+        io_id = int(io_id_hex, 16)
+        io_value = int(io_value_hex, 16)
+        print(f"  IO Element {i + 1}: ID = {io_id} (0x{io_id_hex}), Value = {io_value} (0x{io_value_hex})")
+        io_start += io_data_size_map[io_size]
+    
+    return io_start
+    
 def process3(data):
     packet_length_hex = data[:4]
     packet_length = int(packet_length_hex, 16)
