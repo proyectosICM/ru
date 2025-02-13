@@ -256,26 +256,26 @@ def process3(data):
         # Mover la posición inicial al siguiente elemento IO (cada elemento ocupa 2 bytes)
         io_start += 4
     
-    # No. of IO data 2Bytes (1 byte = 2 caracteres hexadecimales)
+    # No. of IO data 2Byte (1 byte = 2 caracteres hexadecimales)
     n_of_io_data_2b_hex = data[io_start:io_start + 2]
     n_of_io_data_2b = int(n_of_io_data_2b_hex, 16)
-    print(f"\nNo. of IO data 2Bytes = {n_of_io_data_2b} (0x{n_of_io_data_2b_hex})")
+    print(f"\nNo. of IO data 2Byte = {n_of_io_data_2b} (0x{n_of_io_data_2b_hex})")
 
-    # Mover la posición inicial para los datos de IO de 2Bytes
-    io_start += 2
+    io_start += 2  # Saltar el byte que indica el número de elementos de 2 bytes
+
     print("\n--- IO Data Elements (2 Bytes) ---")
 
+    # Extraer y procesar los datos de 2 bytes
     for i in range(n_of_io_data_2b):
-        io_id_hex = data[io_start:io_start + 2]          # ID del IO (1 byte)
-        io_value_hex = data[io_start + 2:io_start + 6]   # Valor del IO (2 bytes)
+        io_id_hex = data[io_start:io_start + 2]            # ID del IO (1 byte)
+        io_value_hex = data[io_start + 2:io_start + 6]     # Valor del IO (2 bytes)
         
         io_id = int(io_id_hex, 16)
         io_value = int(io_value_hex, 16)
         
         print(f"  IO Element {i + 1}: ID = {io_id} (0x{io_id_hex}), Value = {io_value} (0x{io_value_hex})")
         
-        # Mover la posición inicial al siguiente elemento IO (cada elemento ocupa 6 caracteres = 3 bytes)
-        io_start += 6
+        io_start += 6  # Cada elemento IO de 2 bytes ocupa 6 caracteres hexadecimales
         
 def response_server(data):
     data_response = {} 
